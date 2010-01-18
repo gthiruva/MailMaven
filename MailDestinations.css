@@ -1,0 +1,16 @@
+div.MailPopOverlay {
+	padding:40px;
+	width:576px;
+	display:none;
+	background-image:url(http://flowplayer.org/img/overlay/white.png) no-repeat;
+}
+
+div.MailPopOverlay div.close {
+	background:url(http://flowplayer.org/img/overlay/close.png) no-repeat;
+	position:absolute;
+	top:2px;
+	right:5px;
+	width:35px;
+	height:35px;
+	cursor:pointer;
+}

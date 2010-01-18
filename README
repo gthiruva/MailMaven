@@ -1,0 +1,16 @@
+This is a Google Chrome browser Extension developed by George Thiruva which allows you to take
+control of your send mail options when clicking on a mailto: link inside a web page.
+
+This extension has an options page which lets you configure multiple web based e-mail accounts.
+For example you could configure the following list of web mail accounts:
+
+  1) me@gmail.com
+  2) me@yahoo.com
+  3) me2@gmail.com
+
+Once you have configured your list of accounts, the extension will prevent the browser from trying
+to create a new mail message in the default mail application (usually an external mail application
+such as Apple Mail or MS Outlook). Instead, when you click on a mailto: link the extension will
+display a popup window showing all of your configured accounts. Simply click the account you wish
+to use and the extension will open up a new tab/window to send the mail message using the chosen
+account.

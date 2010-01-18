@@ -1,0 +1,41 @@
+<!--
+// Copyright (c) 2009 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+-->
+<html>
+<head>
+
+<script>
+var baseGmailUrl = "https://mail.google.com/";
+var gmailUrlSuffix = "mail/?view=cm&fs=1&tf=1";
+
+function makeGmailDomainUrl() {
+  var gmailUrl = baseGmailUrl;
+  var domainName = window.localStorage["domainName"];
+  if ((typeof domainName != "undefined") && (domainName != "")) {
+    gmailUrl += "a/" + domainName + "/";
+  }
+  gmailUrl += gmailUrlSuffix;
+//  alert("GmailUrl - " + gmailUrl);
+  return gmailUrl;
+}
+
+// Send message to the mailto script to update its cached gmail url.
+// On any change in options, this message will be sent again.
+chrome.extension.onConnect.addListener(function(port) {
+  if (port.name != "GmailUrlConn") {
+  // Not the mailto content script, so do not want to talk to this port. 
+  } else {
+    port.onMessage.addListener(function(msg) {
+    if (msg.req == "GmailUrlPlease") {
+      port.postMessage({gmailDomainUrl: makeGmailDomainUrl()});
+    } else {
+      console.log("Unsupported req on valid port");
+    }
+    });
+  }
+});
+</script>
+</head>
+</html>
