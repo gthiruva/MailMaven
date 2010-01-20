@@ -4,6 +4,7 @@
 
 // Common utils for extensions for Google Apps
 
+/*
 var toField = "&to=";
 var cachedGmailUrl = "";
 
@@ -58,7 +59,6 @@ function rewriteMailtosOnPage() {
   }
 }
 
-/*
 if (window == top) {
   if (cachedGmailUrl != "") {
     rewriteMailtosOnPage();
@@ -77,37 +77,61 @@ if (window == top) {
 }
 */
 
+$(function() {
+var bgImgURL       = chrome.extension.getURL('images/overlay/white.png');
+var trashCanURL    = chrome.extension.getURL('images/general/delete.png');
+var closeButtonURL = chrome.extension.getURL('images/overlay/close.png');
+var specBulletURL  = chrome.extension.getURL('images/general/bullet1.gif');
+
 var overlayDiv = '\
 <!-- overlays --> \
-<div class="MailPopOverlay" id="MailPop" style="background-image:url(http://static.flowplayer.org/img/overlay/flowplayer.png)"> \
-	<h2 style="margin:0px">Here is my overlay</h2> \
-	<img src="http://static.flowplayer.org/img/title/eye192.png" style="float: left; margin:0px 20px 0 0;" /> \
-	<p> \
-		<strong>Sit amet felis non sem eleifend rhoncus. Mauris imperdiet consequat neque, ac molestie eros venenatis pharetra. \
-    In et leo nulla. Vivamus feugiat consequat augue nec vulputate. Vestibulum a ipsum et turpis viverra accumsan.</strong> \
-	</p> \
-	<p> \
-		Cras sit amet est purus, a consectetur augue. Ut scelerisque consequat dictum. Donec in nulla risus. Nulla metus elit, \
-    tempus vel fermentum sed, dictum eu justo. Etiam et nulla ligula. Integer in tincidunt tellus. Cras cursus, lectus id \
-    tincidunt tincidunt, eros arcu cursus velit, a euismod justo lectus non quam. Ut euismod erat eu elit hendrerit. \
-	</p> \
-	<p> \
-		Nulla vitae tellus justo. Donec condimentum lorem ac enim blandit id lobortis felis pellentesque. Mauris nulla velit, \
-    ultrices vel tempor vitae, sollicitudin vitae ligula. Vestibulum nec ullamcorper turpis. Aliquam aliquam aliquam pharetra. \
-	</p> \
-	<p style="color:#666"> \
-		Cras sit amet est purus, a consectetur augue. Ut scelerisque consequat dictum. Donec in nulla risus. Nulla metus elit, \
-    tempus vel fermentum sed, dictum eu justo. Etiam et nulla ligula. Integer in tincidunt tellus. Cras cursus, lectus id \
-    tincidunt tincidunt, eros arcu cursus velit, a euismod justo lectus non quam. Ut euismod erat eu elit hendrerit a aliquet odio consequat. \
-	</p> \
+<div class="MailPopOverlay" id="MailPop" style="background-image:url('+bgImgURL+');display:none;"> \
+  <div class="close" style="background:url('+closeButtonURL+')"></div> \
+	<h2 style="margin:0px">Please choose a mail source to send from ...</h2> \
+\
+<table class="MailDests" id="MailPopTable" cellspacing="0" \
+	summary="Historic information about Olympic medalists that competed in the 20 Km Walk since 1956"> \
+	<caption>Olympic Medalists: 20 Km Walk</caption> \
+\
+	<tr> \
+		<th class="nobg">Games</th> \
+		<th>Gold</th> \
+		<th>Silver</th> \
+		<th>Bronze</th> \
+		<th>&nbsp;</th> \
+	</tr> \
+	<tr> \
+		<th class="spec" style="background:url('+specBulletURL+') no-repeat">1956 Melbourne</th> \
+		<td>Leonid Spirin (URS)</td> \
+		<td>Antanas Mikenas (URS)</td> \
+		<td>Bruno Junk (URS)</td> \
+		<td><img src="'+trashCanURL+'" /></td> \
+	</tr> \
+</table> \
 </div> \
 ';
+
+function loadMailDestinations()
+{
+  // var rows = this.getOverlay().$("mytable > *");
+  console.log("loadMailDestinations was just called from onBeforeLoad");
+  //console.log("There are " + rows.length + " rows in the array");
+  
+  console.log("ID of loaded table is " + $('table.MailDests').attr('id'));
+  
+  $('table.MailDests').append(' \
+  	<tr> \
+		<th class="spec" style="background:url('+specBulletURL+') no-repeat">2004 Athens</th> \
+		<td>Ivano Brugnetti (ITA)</td> \
+		<td>Francisco Javier Fernández (ESP)</td> \
+		<td>Nathan Deakes (AUS)</td> \
+		<td><img src="'+trashCanURL+'" /></td> \
+	</tr> \
+  ');
+}
 
 $('body').prepend(overlayDiv);
 
 $('a[href^=mailto:]').live('click', function(clickEvent){clickEvent.preventDefault();});
-$('a[href^=mailto:]').overlay({target:'#MailPop', speed:'fast', expose:'#000', effect:'apple'}).
-$(function()
-{
-  console.log("I'm in an anonymous function\n");
+$('a[href^=mailto:]').overlay({target:'#MailPop', speed:'fast', expose:'#000', effect:'apple', onBeforeLoad: loadMailDestinations});
 });

@@ -13,8 +13,8 @@
       "32":  "images/gmail/gmail-extension-32.png",
       "64":  "images/gmail/gmail-extension-64.png"
    },
-   "name": "Send from Gmail (no button)",
+   "name": "MailMaven - the tamer of mailto: links",
    "options_page": "options.html",
    "permissions": [ "tabs", "http://*/*", "https://*/*", "http://*.google.com/" ],
-   "version": "1.11.1"
+   "version": "0.7"
 }
